@@ -12,7 +12,7 @@ var (
 )
 
 func SetUpAuthRoutes(router *gin.RouterGroup) {
-	authGroup := router.Group("v1/api/auth")
+	authGroup := router.Group("/auth")
 	{
 		authGroup.POST("/register", authController.Register)
 		authGroup.POST("/login", authController.Login)

@@ -1,13 +1,18 @@
 package main
 
 import (
-	"fmt"
+	"github.com/emaanmohamed/chat-app/configs"
 	"github.com/emaanmohamed/chat-app/internal/db"
-	"gorm.io/gorm"
+	RoutesAuth "github.com/emaanmohamed/chat-app/routes/auth"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
 	db.ConnectToDB()
+	server := gin.Default()
+	routes := server.Group("v1/api")
+	RoutesAuth.SetUpAuthRoutes(routes)
+	server.Run(":" + configs.Envs.Port)
 
 }
