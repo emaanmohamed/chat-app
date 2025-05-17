@@ -23,6 +23,7 @@ func ConnectToDB() {
 
 	if err != nil {
 		log.Fatalf("Cannot connect to database: %v", err)
+
 	}
 
 	sqlDB, err := db.DB()

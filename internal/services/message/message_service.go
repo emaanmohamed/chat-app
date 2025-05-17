@@ -4,6 +4,7 @@ import (
 	"github.com/emaanmohamed/chat-app/internal/db"
 	"github.com/emaanmohamed/chat-app/internal/models"
 	"github.com/emaanmohamed/chat-app/utils"
+	"github.com/google/uuid"
 	"sync"
 	"time"
 )
@@ -63,6 +64,15 @@ func (ms *MessageService) BroadcastMessage(request utils.BroadcastMessageRequest
 
 	if len(errsChan) > 0 {
 		return messages, <-errsChan
+	}
+	return messages, nil
+}
+
+func (ms *MessageService) GetMessageHistory(user1, user2 uuid.UUID) ([]models.Message, error) {
+	var messages []models.Message
+	err := db.DB.Where("(sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)", user1, user2, user2, user1).Find(&messages).Error
+	if err != nil {
+		return nil, err
 	}
 	return messages, nil
 }

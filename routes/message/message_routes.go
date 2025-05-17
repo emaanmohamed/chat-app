@@ -17,6 +17,7 @@ func SetUpMessageRoutes(router *gin.RouterGroup) {
 	{
 		messageGroup.POST("/send", messageController.SendMessage)
 		messageGroup.POST("/broadcast", messageController.BroadcastMessage)
+		messageGroup.GET("/history", messageController.GetMessageHistory)
 
 	}
 

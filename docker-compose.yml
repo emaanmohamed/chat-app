@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:15
+    container_name: chatapp_db
+    environment:
+      POSTGRES_DB: chat
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://root:password@db:5432/chat?sslmode=disable
+    volumes:
+      - ./web/uploads:/app/web/uploads
+
+volumes:
+  pgdata:
