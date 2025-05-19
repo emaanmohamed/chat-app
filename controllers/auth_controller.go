@@ -17,6 +17,17 @@ func NewAuthController(authService *auth.AuthService) *AuthController {
 	}
 }
 
+// Register godoc
+// @Summary Register a new user
+// @Description Register a new user with email and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param user body utils.AuthRequest true "User registration details"
+// @Success 200 {object} utils.Response{data=utils.AuthRequest}
+// @Failure 400 {object} utils.Response{error=string}
+// @Router /auth/register [post]
+
 func (authController AuthController) Register(c *gin.Context) {
 	var registerRequest utils.AuthRequest
 	if err := c.BindJSON(&registerRequest); err != nil {
@@ -30,6 +41,17 @@ func (authController AuthController) Register(c *gin.Context) {
 	}
 	utils.RespondWithJSON(c, 200, gin.H{"message": "User registered successfully"})
 }
+
+// Login godoc
+// @Summary Login a user
+// @Description Login a user with email and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param user body utils.AuthRequest true "User login details"
+// @Success 200 {object} utils.Response{data=utils.AuthRequest}
+// @Failure 400 {object} utils.Response{error=string}
+// @Router /auth/login [post]
 
 func (authController *AuthController) Login(c *gin.Context) {
 	var loginRequest utils.AuthRequest

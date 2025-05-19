@@ -1,26 +1,53 @@
+#services:
+#  db:
+#    image: postgres:15
+#    container_name: chatapp_db
+#    environment:
+#      POSTGRES_DB: chat
+#      POSTGRES_USER: root
+#      POSTGRES_PASSWORD: password
+#    ports:
+#      - "55432:5432"
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
+#
+#  app:
+#    build: .
+#    ports:
+#      - "8083:8083"
+#    depends_on:
+#      - db
+#    environment:
+#      - DATABASE_URL=postgres://root:password@db:5432/chat?sslmode=disable
+#    volumes:
+#      - ./web/uploads:/app/web/uploads
+#
+#volumes:
+#  pgdata:
+
+
 services:
-  db:
-    image: postgres:15
-    container_name: chatapp_db
+  go-app:
+    container_name: go-app
+    image: francescoxx/go-app:1.0.0
+    build: .
     environment:
-      POSTGRES_DB: chat
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
+      DATABASE_URL: "host=go_db user=root password=password dbname=chat sslmode=disable"
+    ports:
+      - "8083:8083"
+    depends_on:
+      - go_db
+  go_db:
+    container_name: go_db
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
     ports:
       - "55432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  app:
-    build: .
-    ports:
-      - "8083:8083"
-    depends_on:
-      - db
-    environment:
-      - DATABASE_URL=postgres://root:password@db:5432/chat?sslmode=disable
-    volumes:
-      - ./web/uploads:/app/web/uploads
-
 volumes:
-  pgdata:
+  pgdata: {}

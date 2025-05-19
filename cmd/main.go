@@ -9,6 +9,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @title Chat App API
+// @version 1.0
+// @description This is a chat application API.
+// @termsOfService http://swagger.io/terms/
+// @host localhost:8083
+// @BasePath /v1/api
+
 func main() {
 
 	db.ConnectToDB()

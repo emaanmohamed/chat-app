@@ -6,6 +6,9 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
+
+RUN go get -d -v ./...
+
 RUN go build -o chat-app ./cmd/main.go
 
 FROM alpine:latest
