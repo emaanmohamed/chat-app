@@ -1,28 +1,35 @@
-1- Architecture overview: 
+# 1. Architecture Overview
 
 [ Web UI (HTML + Bootstrap) ]
-         ↓
+↓
 [ Gin HTTP Server ]
-         ↓
+↓
 [ Auth | Message | Media | Swagger Docs ]
-         ↓
+↓
 [ GORM ORM + PostgreSQL DB ]
-         ↓
+↓
 [ Dockerized Deployment ]
 
+# 2. Tech Stack
 
-2- Tech stack:
+- **Language:** Go
+- **Database:** PostgreSQL
 
-Lang : GO
-DB: Postgree
+---
 
-3- Setup Instructions
+# 3. Setup Instructions
 
-  1. Clone the repository git clone https://github.com/emaanmohamed/chat-app.git
-  2. Copy env example into your env
-  3. docker-compose up --build
+1. Clone the repository:
+   [https://github.com/emaanmohamed/chat-app.git](https://github.com/emaanmohamed/chat-app.git)
+2. Copy `.env.example` to `.env`
+3. Run:
+   ```bash
+   docker-compose up --build
 
-4- Access the app
-  1- login page http://localhost:8083/static/index.html
-  2- signup page http://localhost:8083/static/signup.html
-  3- chat UI http://localhost:8083/static/chat.html
+# 4- Access the app
+
+Login Page: http://localhost:8083/index.html
+
+Signup Page: http://localhost:8083/signup.html
+
+Chat UI: http://localhost:8083/chat.html
