@@ -23,7 +23,20 @@ func (messageController *MessageController) SendMessage(c *gin.Context) {
 		utils.RespondWithError(c, 400, "Invalid request")
 		return
 	}
-	msg, err := messageController.messageService.SendMessage(sendMessageRequest)
+
+	senderIDStr, exists := c.Get("user_id")
+	if !exists {
+		utils.RespondWithError(c, 401, "Unauthorized: user ID not found")
+		return
+	}
+
+	senderID, err := uuid.Parse(senderIDStr.(string))
+	if err != nil {
+		utils.RespondWithError(c, 500, "Invalid user ID format")
+		return
+	}
+
+	msg, err := messageController.messageService.SendMessage(senderID, sendMessageRequest)
 	if err != nil {
 		utils.RespondWithError(c, 500, err.Error())
 		return
@@ -37,7 +50,19 @@ func (messageController *MessageController) BroadcastMessage(c *gin.Context) {
 		utils.RespondWithError(c, 400, "Invalid request")
 		return
 	}
-	msg, err := messageController.messageService.BroadcastMessage(broadcastMessageRequest)
+	senderIDStr, exists := c.Get("user_id")
+	if !exists {
+		utils.RespondWithError(c, 401, "Unauthorized: user ID not found")
+		return
+	}
+
+	senderID, err := uuid.Parse(senderIDStr.(string))
+	if err != nil {
+		utils.RespondWithError(c, 500, "Invalid user ID format")
+		return
+	}
+
+	msg, err := messageController.messageService.BroadcastMessage(senderID, broadcastMessageRequest)
 	if err != nil {
 		utils.RespondWithError(c, 500, err.Error())
 		return

@@ -25,23 +25,32 @@
 <ul id="chatBox" class="mt-4 list-group"></ul>
 
 <script>
-    async function fetchMessages(userId) {
+    async function fetchMessages(receiverId) {
         const token = localStorage.getItem('token');
-        const res = await fetch(`/api/messages/history?user_id=${userId}`, {
-            headers: { 'Authorization': token }
+        const senderId = localStorage.getItem('user_id');
+
+        const res = await fetch(`/v1/api/messages/history?user1=fc8836eb-98e6-4ada-8f47-703f11d599a8&user2=${receiverId}`, {
+            headers: {'Authorization': `Bearer ${token}`}
         });
         const data = await res.json();
         const chatBox = document.getElementById('chatBox');
         chatBox.innerHTML = '';
+
         data.forEach(msg => {
+            const isSender = msg.sender_id === senderId;
+
             const item = document.createElement('li');
-            item.className = 'list-group-item';
-            item.innerHTML = `${msg.content}${msg.mediaURL ? ' <a href="' + msg.mediaURL + '" target="_blank">(media)</a>' : ''}`;
+            item.className = `list-group-item ${isSender ? 'text-end' : 'text-start'}`;
+            item.innerHTML = `
+            <strong>${isSender ? 'You' : 'Them'}:</strong>
+            ${msg.content}
+            ${msg.media_url ? ` <a href="${msg.media_url}" target="_blank">(media)</a>` : ''}
+        `;
             chatBox.appendChild(item);
         });
     }
 
-    document.getElementById('messageForm').onsubmit = async function(e) {
+    document.getElementById('messageForm').onsubmit = async function (e) {
         e.preventDefault();
         const token = localStorage.getItem('token');
         let mediaURL = null;
@@ -50,9 +59,12 @@
         if (fileInput.files.length > 0) {
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
-            const uploadRes = await fetch('/media/upload', {
+            const uploadRes = await fetch('/v1/api/media/upload', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
             const uploadData = await uploadRes.json();
             mediaURL = uploadData.url;
@@ -60,22 +72,25 @@
 
         const body = {
             content: content.value,
-            media_url: mediaURL
         };
-
-        const endpoint = receiverId.value ? '/api/messages/send' : '/api/messages/broadcast';
+        if (mediaURL) body.media_url = mediaURL;
+        const endpoint = receiverId.value ? '/v1/api/messages/send' : '/v1/api/messages/broadcast';
         if (receiverId.value) body.receiver_id = receiverId.value;
 
-        await fetch(endpoint, {
+        const res = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': token
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(body)
         });
 
-        alert('Message sent');
+        if (res.ok) {
+            fetchMessages(receiverId.value);
+        } else {
+            alert('Failed to send message');
+        }
     }
 </script>
 </body>

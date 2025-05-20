@@ -21,7 +21,7 @@
 <script>
     document.getElementById('signupForm').onsubmit = async function(e) {
         e.preventDefault();
-        const res = await fetch('/auth/signup', {
+        const res = await fetch('/v1/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: username.value, password: password.value })

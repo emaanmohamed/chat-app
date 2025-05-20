@@ -15,9 +15,9 @@ func NewMessageService() *MessageService {
 	return &MessageService{}
 }
 
-func (ms *MessageService) SendMessage(request utils.MessageCreateRequest) (*models.Message, error) {
+func (ms *MessageService) SendMessage(senderID uuid.UUID, request utils.MessageCreateRequest) (*models.Message, error) {
 	message := models.Message{
-		SenderID:   request.SenderID,
+		SenderID:   senderID,
 		ReceiverID: request.ReceiverID,
 		Content:    request.Content,
 		MediaURL:   request.MediaURL,
@@ -30,9 +30,9 @@ func (ms *MessageService) SendMessage(request utils.MessageCreateRequest) (*mode
 
 }
 
-func (ms *MessageService) BroadcastMessage(request utils.BroadcastMessageRequest) ([]models.Message, error) {
+func (ms *MessageService) BroadcastMessage(senderID uuid.UUID, request utils.BroadcastMessageRequest) ([]models.Message, error) {
 	var users []models.User
-	db.DB.Where("NOT id = ?", request.SenderID).Find(&users)
+	db.DB.Where("NOT id = ?", senderID).Find(&users)
 
 	var wg sync.WaitGroup
 	var mu sync.Mutex
@@ -44,7 +44,7 @@ func (ms *MessageService) BroadcastMessage(request utils.BroadcastMessageRequest
 		go func(user models.User) {
 			defer wg.Done()
 			msg := models.Message{
-				SenderID:   request.SenderID,
+				SenderID:   senderID,
 				ReceiverID: user.ID,
 				Content:    request.Content,
 				MediaURL:   request.MediaURL,

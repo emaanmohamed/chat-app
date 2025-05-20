@@ -27,20 +27,20 @@ func (authService *AuthService) Register(request utils.AuthRequest) error {
 	}
 	return nil
 }
-func (authService *AuthService) Login(request utils.AuthRequest) (string, error) {
+func (authService *AuthService) Login(request utils.AuthRequest) (string, *models.User, error) {
 	var user models.User
 	if err := db.DB.Where("username = ?", request.Username).First(&user).Error; err != nil {
-		return "", err
+		return "", nil, err
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(request.Password)); err != nil {
-		return "", err
+		return "", nil, err
 	}
 
-	token, err := utils.GenerateJWT(user.Username)
+	token, err := utils.GenerateJWT(user.Username, user.ID.String())
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
-	return token, nil
+	return token, &user, nil
 
 }

@@ -32,7 +32,7 @@ func (mediaController *MediaController) UploadMediaHandler() gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(200, gin.H{"message": "File uploaded successfully", "filename": file.Filename})
+		c.JSON(200, gin.H{"message": "File uploaded successfully", "filename": file.Filename, "url": "http://localhost:8080/media/uploads/" + filename})
 	}
 
 }

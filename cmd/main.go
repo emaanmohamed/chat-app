@@ -21,8 +21,8 @@ func main() {
 	db.ConnectToDB()
 	server := gin.Default()
 
+	server.Static("/uploads", "./media/uploads")
 	server.Static("/static", "./web")
-	server.Static("/uploads", "./web/uploads")
 
 	routes := server.Group("v1/api")
 	RoutesAuth.SetUpAuthRoutes(routes)

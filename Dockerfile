@@ -21,6 +21,7 @@ RUN mkdir -p /app/media/uploads
 
 COPY --from=builder /app/chat-app .
 COPY --from=builder /app/web ./web
+COPY --from=builder /app/media ./media
 
 EXPOSE 8083
 

@@ -29,7 +29,6 @@
 services:
   go-app:
     container_name: go-app
-    image: francescoxx/go-app:1.0.0
     build: .
     environment:
       DATABASE_URL: "host=go_db user=root password=password dbname=chat sslmode=disable"
@@ -39,11 +38,11 @@ services:
       - go_db
   go_db:
     container_name: go_db
-    image: postgres:12
+    image: postgres:15
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+      POSTGRES_DB: chat
     ports:
       - "55432:5432"
     volumes:

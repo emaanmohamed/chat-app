@@ -23,7 +23,7 @@
 <script>
     document.getElementById('loginForm').onsubmit = async function (e) {
         e.preventDefault();
-        const res = await fetch('/auth/login', {
+        const res = await fetch('/v1/api/auth/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -32,8 +32,11 @@
             })
         });
         const data = await res.json();
-        if (data.token) {
+        if (data.token && data.user_id) {
             localStorage.setItem('token', data.token);
+            localStorage.setItem('user_id', data.user_id);
+            console.log(localStorage.getItem('user_id'));
+
             location.href = 'chat.html';
         } else {
             alert(data.error || 'Login failed');

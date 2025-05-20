@@ -13,7 +13,7 @@ var (
 )
 
 func SetUpMessageRoutes(router *gin.RouterGroup) {
-	messageGroup := router.Group("/message").Use(middleware.AuthMiddleware())
+	messageGroup := router.Group("/messages").Use(middleware.AuthMiddleware())
 	{
 		messageGroup.POST("/send", messageController.SendMessage)
 		messageGroup.POST("/broadcast", messageController.BroadcastMessage)

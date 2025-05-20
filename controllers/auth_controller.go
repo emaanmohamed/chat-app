@@ -60,10 +60,10 @@ func (authController *AuthController) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := authController.authService.Login(loginRequest)
+	token, user, err := authController.authService.Login(loginRequest)
 	if err != nil {
 		utils.RespondWithError(c, 400, "Invalid credentials")
 		return
 	}
-	utils.RespondWithJSON(c, 200, gin.H{"token": token})
+	utils.RespondWithJSON(c, 200, gin.H{"token": token, "user_id": user.ID.String()})
 }

@@ -25,7 +25,7 @@ func initConfig() Config {
 		Port:       getEnv("PORT", "8083"),
 		DBUser:     getEnv("DB_USER", "root"),
 		DBPassword: getEnv("DB_PASSWORD", "password"),
-		DBHOST:     getEnv("DB_HOST", "127.0.0.1"),
+		DBHOST:     getEnv("DB_HOST", "go_db"),
 		DBPort:     getEnv("DB_PORT", "5432"),
 		DBName:     getEnv("DB_NAME", "chat"),
 	}
