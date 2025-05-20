@@ -1,19 +1,14 @@
 1- Architecture overview: 
 
 [ Web UI (HTML + Bootstrap) ]
-           |
-       [ Gin HTTP Server ]
-           |
-    ------------------------
-    |     |      |         |
-  Auth  Message  Media   Swagger
-Service Service Service   Docs
-           |
-       [ GORM ORM ]
-           |
-      [ PostgreSQL DB ]
-           |
-       [ Dockerized ]
+         ↓
+[ Gin HTTP Server ]
+         ↓
+[ Auth | Message | Media | Swagger Docs ]
+         ↓
+[ GORM ORM + PostgreSQL DB ]
+         ↓
+[ Dockerized Deployment ]
 
 
 2- Tech stack:
