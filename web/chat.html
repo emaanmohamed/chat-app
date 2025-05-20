@@ -29,7 +29,7 @@
         const token = localStorage.getItem('token');
         const senderId = localStorage.getItem('user_id');
 
-        const res = await fetch(`/v1/api/messages/history?user1=fc8836eb-98e6-4ada-8f47-703f11d599a8&user2=${receiverId}`, {
+        const res = await fetch(`/v1/api/messages/history?user1=${senderId}&user2=${receiverId}`, {
             headers: {'Authorization': `Bearer ${token}`}
         });
         const data = await res.json();
